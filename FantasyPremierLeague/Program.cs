@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FantasyPremierLeague
 {
@@ -14,20 +12,30 @@ namespace FantasyPremierLeague
             {
                 Console.WriteLine("Starting...");
 
-                ////Load Bootstrap data
+                //Load Bootstrap data
                 Console.WriteLine("Starting Bootstrap data load");
                 FantasyPremierLeagueAPIClient.GetPlayerBootstrapDataJson();
+                Console.WriteLine("Bootstrap data load complete");
+                Console.WriteLine("");
 
-                //Console.WriteLine("Starting Player data load");
+                Console.WriteLine("Starting Player data load");
 
-                //int playerID = 176;
                 string playerName;
 
                 PlayerRepository player = new PlayerRepository();
                 List<int> playerIds = player.GetAllPlayerIds();
+                List<int> completedPlayerIds = player.GetCompetedPlayerIds();
 
-                ////Load player fixture and history data
-                foreach (int playerID in playerIds)
+                List<int> toDoPlayerIds = playerIds.Except(completedPlayerIds).ToList();
+
+                //Remove when finished debugging
+                //int playerID = 176;
+                //playerName = player.GetPlayerName(playerID);
+                //Console.WriteLine(playerName);
+                //FantasyPremierLeagueAPIClient.GetPlayerDataJson(playerID);
+
+                //Load player fixture and history data
+                foreach (int playerID in toDoPlayerIds)
                 {
                     playerName = player.GetPlayerName(playerID);
 

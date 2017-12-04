@@ -304,6 +304,7 @@ namespace FantasyPremierLeague
 
     public class Fixture2
     {
+        public int fixtureid { get; set; }
         public int id { get; set; }
         public string kickoff_time_formatted { get; set; }
         public string event_name { get; set; }
@@ -322,6 +323,7 @@ namespace FantasyPremierLeague
         public int? @event { get; set; }
         public int team_a { get; set; }
         public int team_h { get; set; }
+        public int is_homeINT { get; set; }
     }
 
     public class History

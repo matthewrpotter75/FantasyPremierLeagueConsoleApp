@@ -108,6 +108,20 @@ namespace FantasyPremierLeague
             }
         }
 
+        public List<int> GetCompetedPlayerIds()
+        {
+            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+            {
+                string selectQuery = @"SELECT p.id FROM dbo.Players p INNER JOIN dbo.PlayerHistory ph ON p.id = ph.playerId INNER JOIN dbo.Gameweeks g ON ph.gameweekId = g.id WHERE g.id = (SELECT TOP 1 id FROM dbo.Gameweeks WHERE deadline_time < GETDATE() ORDER BY deadline_time DESC)";
+
+                IDataReader reader = db.ExecuteReader(selectQuery);
+
+                List<int> result = ReadList(reader);
+
+                return result;
+            }
+        }
+
         List<int> ReadList(IDataReader reader)
         {
             List<int> list = new List<int>();
