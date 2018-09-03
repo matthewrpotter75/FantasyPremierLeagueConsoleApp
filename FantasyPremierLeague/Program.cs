@@ -26,7 +26,11 @@ namespace FantasyPremierLeague
                 List<int> playerIds = player.GetAllPlayerIds();
                 List<int> completedPlayerIds = player.GetCompetedPlayerIds();
 
-                List<int> toDoPlayerIds = playerIds.Except(completedPlayerIds).ToList();
+                //Only process unprocessed players
+                //List<int> toDoPlayerIds = playerIds.Except(completedPlayerIds).ToList();
+
+                //Process all players
+                List<int> toDoPlayerIds = playerIds;
 
                 //Remove when finished debugging
                 //int playerID = 176;
