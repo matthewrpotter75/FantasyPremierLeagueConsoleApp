@@ -66,6 +66,7 @@ namespace FantasyPremierLeague
                 string playerName;
                 //bool rowDeleted = false;
                 int rowsDeleted;
+                string deleteQuery;
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
@@ -77,7 +78,17 @@ namespace FantasyPremierLeague
                     //playerName = db.Query(querySQL, new { PlayerId = playerId }).SingleOrDefault().ToString();
 
                     //rowDeleted = db.Delete(new Player() { id = playerId });
-                    string deleteQuery = "DELETE FROM dbo.Players WHERE id = @PlayerId;";
+
+                    //Delete from PlayerHistory so can delete player from Players table
+                    deleteQuery = "DELETE FROM dbo.PlayerHistory WHERE playerId = @PlayerId;";
+                    rowsDeleted = db.Execute(deleteQuery, new { PlayerId = playerId });
+
+                    //Delete from HistoryPast so can delete player from Players table
+                    deleteQuery = "DELETE FROM dbo.HistoryPast WHERE playerId = @PlayerId;";
+                    rowsDeleted = db.Execute(deleteQuery, new { PlayerId = playerId });
+
+                    //Delete from Players table
+                    deleteQuery = "DELETE FROM dbo.Players WHERE id = @PlayerId;";
                     rowsDeleted = db.Execute(deleteQuery, new { PlayerId = playerId });
                 }
 
@@ -99,6 +110,20 @@ namespace FantasyPremierLeague
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
             {
                 string selectQuery = @"SELECT id FROM dbo.Players";
+
+                IDataReader reader = db.ExecuteReader(selectQuery);
+
+                List<int> result = ReadList(reader);
+
+                return result;
+            }
+        }
+
+        public List<int> GetCompetedPlayerIds()
+        {
+            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+            {
+                string selectQuery = @"SELECT p.id FROM dbo.Players p INNER JOIN dbo.PlayerHistory ph ON p.id = ph.playerId INNER JOIN dbo.Gameweeks g ON ph.gameweekId = g.id WHERE g.id = (SELECT TOP 1 id FROM dbo.Gameweeks WHERE deadline_time < GETDATE() ORDER BY deadline_time DESC)";
 
                 IDataReader reader = db.ExecuteReader(selectQuery);
 

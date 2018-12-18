@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace FantasyPremierLeague
 {
-    public static class FantasyPremierLeagueAPIClient
+    public class FantasyPremierLeagueAPIClient
     {
         #region fields
 
@@ -16,7 +16,7 @@ namespace FantasyPremierLeague
         /// Base URL for the FantasyPremierLeaguePlayerData Endpoint URL
         /// </summary>
         private const string baseUrl = "https://fantasy.premierleague.com/drf/element-summary/{0}";
-        private const string baseBootstrapUrl = "https://fantasy.premierleague.com/drf/bootstrap-static";        
+        private const string baseBootstrapUrl = "https://fantasy.premierleague.com/drf/bootstrap-static";
 
         #endregion
 
@@ -158,6 +158,7 @@ namespace FantasyPremierLeague
         {
             try
             {
+                //playerID = 188;
                 // Customize URL according to playerID parameter
                 var url = string.Format(baseUrl, playerID);
 
@@ -177,10 +178,13 @@ namespace FantasyPremierLeague
                     FixtureRepository fixtureRepository = new FixtureRepository();
 
                     List<int> fixtureIds = fixtureRepository.GetAllFixtureIds();
+                    List<string> opponentShortNames;
 
                     foreach (Fixture2 fixture in fantasyPremierLeaguePlayerData.fixtures)
                     {
-                        if (!fixtureIds.Contains(fixture.id))
+                        fixture.is_homeINT = Convert.ToInt32(fixture.is_home);
+                        opponentShortNames = fixtureRepository.GetAllFixtureOpponentShortName(fixture.id);
+                        if (!fixtureIds.Contains(fixture.id)) //|| !opponentShortNames.Contains(fixture.opponent_short_name))
                         {
                             fixtureRepository.InsertFixture(fixture);
                             //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - inserted");

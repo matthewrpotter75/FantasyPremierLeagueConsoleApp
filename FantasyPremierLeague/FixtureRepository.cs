@@ -96,6 +96,20 @@ namespace FantasyPremierLeague
             }
         }
 
+        public List<string> GetAllFixtureOpponentShortName(int fixtureId)
+        {
+            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+            {
+                string selectQuery = @"SELECT opponent_short_name FROM dbo.Fixtures WHERE id = " + fixtureId.ToString();
+
+                IDataReader reader = db.ExecuteReader(selectQuery);
+
+                List<string> result = ReadStringList(reader);
+
+                return result;
+            }
+        }
+
         List<int> ReadList(IDataReader reader)
         {
             List<int> list = new List<int>();
@@ -106,6 +120,21 @@ namespace FantasyPremierLeague
                 //check for the null value and than add 
                 if (!reader.IsDBNull(column))
                     list.Add(reader.GetInt32(column));
+            }
+
+            return list;
+        }
+
+        List<string> ReadStringList(IDataReader reader)
+        {
+            List<string> list = new List<string>();
+            int column = reader.GetOrdinal("opponent_short_name");
+
+            while (reader.Read())
+            {
+                //check for the null value and than add 
+                if (!reader.IsDBNull(column))
+                    list.Add(reader.GetString(column));
             }
 
             return list;
