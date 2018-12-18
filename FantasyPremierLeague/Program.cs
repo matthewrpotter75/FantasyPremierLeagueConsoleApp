@@ -13,10 +13,6 @@ namespace FantasyPremierLeague
         {            
             try
             {
-                //ReadAllSettings();
-                //ReadSetting("Setting1");
-
-                //string filePath = ConfigurationManager.AppSettings["logFilePath"];
                 string filePath = ReadSetting("logFilePath");
 
                 if (filePath.Substring(filePath.Length - 1, 1) != "\\")
@@ -93,30 +89,6 @@ namespace FantasyPremierLeague
                 throw ex;
             }
         }
-
-        //public static void ReadAllSettings()
-        //{
-        //    try
-        //    {
-        //        var appSettings = ConfigurationManager.AppSettings;
-
-        //        if (appSettings.Count == 0)
-        //        {
-        //            Console.WriteLine("AppSettings is empty.");
-        //        }
-        //        else
-        //        {
-        //            foreach (var key in appSettings.AllKeys)
-        //            {
-        //                Console.WriteLine("Key: {0} Value: {1}", key, appSettings[key]);
-        //            }
-        //        }
-        //    }
-        //    catch (ConfigurationErrorsException)
-        //    {
-        //        Console.WriteLine("Error reading app settings");
-        //    }
-        //}
 
         public static string ReadSetting(string key)
         {
