@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace FantasyPremierLeague
 {
-    public static class FantasyPremierLeagueAPIClient
+    public class FantasyPremierLeagueAPIClient
     {
         #region fields
 
@@ -16,7 +16,7 @@ namespace FantasyPremierLeague
         /// Base URL for the FantasyPremierLeaguePlayerData Endpoint URL
         /// </summary>
         private const string baseUrl = "https://fantasy.premierleague.com/drf/element-summary/{0}";
-        private const string baseBootstrapUrl = "https://fantasy.premierleague.com/drf/bootstrap-static";        
+        private const string baseBootstrapUrl = "https://fantasy.premierleague.com/drf/bootstrap-static";
 
         #endregion
 
