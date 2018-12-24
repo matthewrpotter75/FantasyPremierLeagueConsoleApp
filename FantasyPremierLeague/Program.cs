@@ -13,6 +13,10 @@ namespace FantasyPremierLeague
         {            
             try
             {
+                TextWriter tmp = Console.Out;
+                Console.SetOut(tmp);
+                Console.WriteLine("Starting...");
+
                 string filePath = ReadSetting("logFilePath");
 
                 if (filePath.Substring(filePath.Length - 1, 1) != "\\")
@@ -83,6 +87,9 @@ namespace FantasyPremierLeague
                 Console.ReadLine();
 
                 filestream.Dispose();
+
+                Console.SetOut(tmp);
+                Console.WriteLine("Finished!!!");
             }
             catch(Exception ex)
             {
