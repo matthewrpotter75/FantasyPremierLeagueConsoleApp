@@ -24,7 +24,7 @@ namespace FantasyPremierLeague
                     filePath = filePath + "\\";
                 }
 
-                string timestamp = DateTime.Now.ToString("yyyymmdd");
+                string timestamp = DateTime.Now.ToString("yyyyMMdd");
 
                 filePath = filePath + "FantasyPremierLeage" + timestamp + ".log";
 
