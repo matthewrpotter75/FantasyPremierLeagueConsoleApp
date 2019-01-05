@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace FantasyPremierLeague
 {
@@ -13,10 +11,14 @@ namespace FantasyPremierLeague
         {            
             try
             {
-                TextWriter tmp = Console.Out;
-                Console.SetOut(tmp);
+                //Write Starting to console window
+                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
+                standardOutput.AutoFlush = true;
+                //TextWriter tmp = Console.Out;
+                Console.SetOut(standardOutput);
                 Console.WriteLine("Starting...");
 
+                //Read the filepath from the App.Settings
                 string filePath = ReadSetting("logFilePath");
 
                 if (filePath.Substring(filePath.Length - 1, 1) != "\\")
@@ -26,8 +28,10 @@ namespace FantasyPremierLeague
 
                 string timestamp = DateTime.Now.ToString("yyyyMMdd");
 
+                //Create the full filepath and filename, including the datestamp
                 filePath = filePath + "FantasyPremierLeage" + timestamp + ".log";
 
+                //Redirect Console.WriteLine statements to log file
                 FileStream filestream = new FileStream(filePath, FileMode.Create);
                 StreamWriter streamwriter = new StreamWriter(filestream);
                 streamwriter.AutoFlush = true;
@@ -80,16 +84,19 @@ namespace FantasyPremierLeague
 
                 Console.WriteLine("Player data load complete");
                 Console.WriteLine("");
-
-                //// Wait for user input - keep the program running
+                
                 Console.WriteLine("Finished!!!");
 
-                Console.ReadLine();
+                // Recover the standard output stream so that a 
+                // completion message can be displayed.
+                Console.SetOut(standardOutput);
+                Console.WriteLine("Finished!!!");
 
+                streamwriter.Close();
                 filestream.Dispose();
 
-                Console.SetOut(tmp);
-                Console.WriteLine("Finished!!!");
+                //// Wait for user input - keep the program running
+                Console.ReadKey();
             }
             catch(Exception ex)
             {
@@ -142,9 +149,11 @@ namespace FantasyPremierLeague
                 }
 
                 Console.SetOut(writer);
+
                 //Console.WriteLine("This is a line of text");
                 //Console.WriteLine("Everything written to Console.Write() or");
                 //Console.WriteLine("Console.WriteLine() will be written to a file");
+
                 Console.SetOut(oldOut);
                 writer.Close();
                 ostrm.Close();
