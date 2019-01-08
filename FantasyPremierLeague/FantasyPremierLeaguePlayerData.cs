@@ -323,7 +323,7 @@ namespace FantasyPremierLeague
         public int? @event { get; set; }
         public int team_a { get; set; }
         public int team_h { get; set; }
-        public int is_homeINT { get; set; }
+        //public int is_homeINT { get; set; }
     }
 
     public class History

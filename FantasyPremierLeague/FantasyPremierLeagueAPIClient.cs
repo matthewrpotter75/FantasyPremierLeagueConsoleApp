@@ -182,7 +182,7 @@ namespace FantasyPremierLeague
 
                     foreach (Fixture2 fixture in fantasyPremierLeaguePlayerData.fixtures)
                     {
-                        fixture.is_homeINT = Convert.ToInt32(fixture.is_home);
+                        //fixture.is_homeINT = Convert.ToInt32(fixture.is_home);
                         opponentShortNames = fixtureRepository.GetAllFixtureOpponentShortName(fixture.id);
                         if (!fixtureIds.Contains(fixture.id)) //|| !opponentShortNames.Contains(fixture.opponent_short_name))
                         {

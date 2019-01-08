@@ -29,7 +29,7 @@ namespace FantasyPremierLeague
                 string timestamp = DateTime.Now.ToString("yyyyMMdd");
 
                 //Create the full filepath and filename, including the datestamp
-                filePath = filePath + "FantasyPremierLeage" + timestamp + ".log";
+                filePath = filePath + "FantasyPremierLeague" + timestamp + ".log";
 
                 //Redirect Console.WriteLine statements to log file
                 FileStream filestream = new FileStream(filePath, FileMode.Create);

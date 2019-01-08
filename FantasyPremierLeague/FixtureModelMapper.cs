@@ -17,7 +17,7 @@ namespace FantasyPremierLeague
                 //Map(x => x.id).Column("id");
 
                 Map(x => x.id).Key(KeyType.Assigned);
-                Map(x => x.is_homeINT).Key(KeyType.Assigned);
+                //Map(x => x.is_homeINT).Key(KeyType.Assigned);
                 //Map(x => x.fixtureid).Key(KeyType.Identity);
 
                 //Ignore this property entirely
