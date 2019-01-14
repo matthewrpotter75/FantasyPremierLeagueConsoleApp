@@ -15,8 +15,8 @@ namespace FantasyPremierLeague
         /// <summary>
         /// Base URL for the FantasyPremierLeaguePlayerData Endpoint URL
         /// </summary>
-        private const string baseUrl = "https://fantasy.premierleague.com/drf/element-summary/{0}";
-        private const string baseBootstrapUrl = "https://fantasy.premierleague.com/drf/bootstrap-static";
+        //private const string baseUrl = "https://fantasy.premierleague.com/drf/element-summary/{0}";
+        //private const string baseBootstrapUrl = "https://fantasy.premierleague.com/drf/bootstrap-static";
 
         #endregion
 
@@ -26,6 +26,8 @@ namespace FantasyPremierLeague
         {
             try
             {
+                string baseBootstrapUrl = ConfigSettings.ReadSetting("bootstrapURL");
+
                 //PlayerModelMappings.Initialize();
                 //GameweekModelMappings.Initialize();
 
@@ -43,28 +45,31 @@ namespace FantasyPremierLeague
                     var fantasyPremierLeagueBootstrapData = serializer.Deserialize<FantasyPremierLeagueBootstrapData>(reader);
 
                     //Load team data
-                    Console.WriteLine("Starting Teams load");
+                    Logger.Out("Starting Teams load");
+
                     List<int> teamIds = teamRepository.GetAllTeamIds();
 
                     foreach (Team team in fantasyPremierLeagueBootstrapData.teams)
                     {
                         if (!teamIds.Contains(team.id))
                         {
-                            Console.WriteLine(team.name + " (" + Convert.ToString(team.code) + ") - inserted");
+                            Logger.Out(team.name + " (" + Convert.ToString(team.code) + ") - inserted");
 
                             teamRepository.InsertTeam(team);
                         }
                         else
                         {
                             teamRepository.UpdateTeam(team);
+
+                            Logger.Out(team.name + " (" + Convert.ToString(team.code) + ") - updated");
                         }
                     }
 
-                    Console.WriteLine("Teams load complete");
-                    Console.WriteLine("");
+                    Logger.Out("Teams load complete");
+                    Logger.Out("");
 
                     //Load player position data
-                    Console.WriteLine("Starting Player Positions load");
+                    Logger.Out("Starting Player Positions load");
 
                     PlayerPositionRepository playerPositionRepository = new PlayerPositionRepository();
 
@@ -74,21 +79,23 @@ namespace FantasyPremierLeague
                     {
                         if (!playerPositionIds.Contains(playerPosition.id))
                         {
-                            Console.WriteLine(playerPosition.singular_name + " (" + playerPosition.singular_name_short + ") - inserted");
-
                             playerPositionRepository.InsertPlayerPosition(playerPosition);
+
+                            Logger.Out(playerPosition.singular_name + " (" + playerPosition.singular_name_short + ") - inserted");
                         }
                         else
                         {
                             playerPositionRepository.UpdatePlayerPosition(playerPosition);
+
+                            Logger.Out(playerPosition.singular_name + " (" + playerPosition.singular_name_short + ") - updated");
                         }
                     }
 
-                    Console.WriteLine("Player Positions load complete");
-                    Console.WriteLine("");
+                    Logger.Out("Player Positions load complete");
+                    Logger.Out("");
 
                     //Load player data
-                    Console.WriteLine("Starting Players load");
+                    Logger.Out("Starting Players load");
 
                     PlayerRepository playerRepository = new PlayerRepository();
 
@@ -112,19 +119,21 @@ namespace FantasyPremierLeague
                         {
                             playerRepository.InsertPlayer(player);
 
-                            Console.WriteLine(player.first_name + " " + player.second_name + " - inserted");
+                            Logger.Out(player.first_name + " " + player.second_name + " - inserted");
                         }
                         else
                         {
                             playerRepository.UpdatePlayer(player);
+
+                            Logger.Out(player.first_name + " " + player.second_name + " - updated");
                         }
                     }
 
-                    Console.WriteLine("Players load complete");
-                    Console.WriteLine("");
+                    Logger.Out("Players load complete");
+                    Logger.Out("");
 
                     //Load gameweek data
-                    Console.WriteLine("Starting Gameweeks load");
+                    Logger.Out("Starting Gameweeks load");
 
                     GameweekRepository gameweekRepository = new GameweekRepository();
 
@@ -136,20 +145,23 @@ namespace FantasyPremierLeague
                         {
                             gameweekRepository.InsertGameweek(gameweek);
 
-                            Console.WriteLine(gameweek.name + " - inserted");
+                            Logger.Out(gameweek.name + " - inserted");
                         }
                         else
                         {
                             gameweekRepository.UpdateGameweek(gameweek);
+
+                            Logger.Out(gameweek.name + " - updated");
                         }
                     }
 
-                    Console.WriteLine("Gameweeks load complete");
-                    Console.WriteLine("");
+                    Logger.Out("Gameweeks load complete");
+                    Logger.Out("");
                 }
             }
             catch (Exception ex)
             {
+                Logger.Error("Bootstrap data exception: " + ex.Message);
                 throw new Exception("Bootstrap data exception: " + ex.Message);
             }
         }
@@ -158,9 +170,11 @@ namespace FantasyPremierLeague
         {
             try
             {
+                string playerUrl = ConfigSettings.ReadSetting("playerURL");
+
                 //playerID = 188;
                 // Customize URL according to playerID parameter
-                var url = string.Format(baseUrl, playerID);
+                var url = string.Format(playerUrl, playerID);
 
                 HttpClient client = new HttpClient();
                 JsonSerializer serializer = new JsonSerializer();
@@ -173,6 +187,27 @@ namespace FantasyPremierLeague
                     // json size doesn't matter because only a small piece is read at a time from the HTTP request
                     var fantasyPremierLeaguePlayerData = serializer.Deserialize<FantasyPremierLeaguePlayerData>(reader);
                     //var fantasyPremierLeaguePlayerData = JsonConvert.DeserializeObject< FantasyPremierLeaguePlayerData>(reader);
+
+                    //Load player history data
+                    HistoryRepository historyRepository = new HistoryRepository();
+
+                    List<int> historyIds = historyRepository.GetAllHistoryIds();
+
+                    foreach (History history in fantasyPremierLeaguePlayerData.history)
+                    {
+                        if (!historyIds.Contains(history.id))
+                        {
+                            historyRepository.InsertHistory(history);
+                            //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
+                            //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
+                        }
+                        else
+                        {
+                            historyRepository.UpdateHistory(history);
+                            //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - updated");
+                            //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - updated");
+                        }
+                    }
 
                     //Load player fixtures data
                     FixtureRepository fixtureRepository = new FixtureRepository();
@@ -187,33 +222,18 @@ namespace FantasyPremierLeague
                         if (!fixtureIds.Contains(fixture.id)) //|| !opponentShortNames.Contains(fixture.opponent_short_name))
                         {
                             fixtureRepository.InsertFixture(fixture);
+                            //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
                             //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
                         }
                         else
                         {
                             fixtureRepository.UpdateFixture(fixture);
+                            //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - updated");
                             //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - updated");
                         }
                     }
 
-                    //Load player history data
-                    HistoryRepository historyRepository = new HistoryRepository();
-
-                    List<int> historyIds = historyRepository.GetAllHistoryIds();
-
-                    foreach (History history in fantasyPremierLeaguePlayerData.history)
-                    {
-                        if (!historyIds.Contains(history.id))
-                        {
-                            historyRepository.InsertHistory(history);
-                            //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
-                        }
-                        else
-                        {
-                            historyRepository.UpdateHistory(history);
-                            //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - updated");
-                        }
-                    }
+                    //Logger.Out("");
 
                     //Load history past data
                     HistoryPastRepository historyPastRepository = new HistoryPastRepository();
@@ -226,11 +246,13 @@ namespace FantasyPremierLeague
                         if (!historyPastIds.Contains(historyPast.id))
                         {
                             historyPastRepository.InsertHistoryPast(historyPast);
+                            //Logger.Out("PlayerId(" + Convert.ToString(playerID) + ") - inserted");
                             //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
                         }
                         else
                         {
                             historyPastRepository.UpdateHistoryPast(historyPast);
+                            //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - updated");
                             //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - updated");
                         }
                     }
@@ -238,6 +260,7 @@ namespace FantasyPremierLeague
             }
             catch (Exception ex)
             {
+                Logger.Error("Player data exception (PlayerId: " + playerID.ToString() + "): " + ex.Message);
                 throw new Exception("Player data exception (PlayerId: " + playerID.ToString() + "): " + ex.Message);
             }
         }

@@ -33,23 +33,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="Dapper.Contrib, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.Contrib.1.50.4\lib\net451\Dapper.Contrib.dll</HintPath>
+    <Reference Include="Dapper.Contrib, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Contrib.1.50.5\lib\net451\Dapper.Contrib.dll</HintPath>
     </Reference>
     <Reference Include="DapperExtensions, Version=1.6.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DapperExtensions.1.6.3\lib\net45\DapperExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -64,39 +66,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FixtureModelMapper.cs" />
-    <Compile Include="GameweekModelMapper.cs" />
-    <Compile Include="HistoryModelMapper.cs" />
-    <Compile Include="HistoryPastModelMapper.cs" />
-    <Compile Include="HistoryPastRepository.cs" />
-    <Compile Include="IHistoryPast.cs" />
-    <Compile Include="Mappings.cs" />
-    <Compile Include="FantasyPremierLeagueBootstrapData.cs" />
+    <Compile Include="ConfigSettings.cs" />
+    <Compile Include="Mappers\FixtureModelMapper.cs" />
+    <Compile Include="Mappers\GameweekModelMapper.cs" />
+    <Compile Include="Mappers\HistoryModelMapper.cs" />
+    <Compile Include="Mappers\HistoryPastModelMapper.cs" />
+    <Compile Include="Repositories\HistoryPastRepository.cs" />
+    <Compile Include="Interfaces\IHistoryPast.cs" />
+    <Compile Include="Mappers\Mappings.cs" />
+    <Compile Include="DataClasses\FantasyPremierLeagueBootstrapData.cs" />
     <Compile Include="FantasyPremierLeagueAPIClient.cs" />
-    <Compile Include="FantasyPremierLeaguePlayerData.cs" />
-    <Compile Include="FixtureRepository.cs" />
-    <Compile Include="GameweekRepository.cs" />
-    <Compile Include="HistoryRepository.cs" />
-    <Compile Include="IFixture.cs" />
-    <Compile Include="IGameweek.cs" />
-    <Compile Include="IHistory.cs" />
-    <Compile Include="IPlayer.cs" />
-    <Compile Include="IPlayerPosition.cs" />
-    <Compile Include="PlayerModelMapper.cs" />
-    <Compile Include="PlayerPositionRepository.cs" />
-    <Compile Include="PlayerRepository.cs" />
+    <Compile Include="DataClasses\FantasyPremierLeaguePlayerData.cs" />
+    <Compile Include="Repositories\FixtureRepository.cs" />
+    <Compile Include="Repositories\GameweekRepository.cs" />
+    <Compile Include="Repositories\HistoryRepository.cs" />
+    <Compile Include="Interfaces\IFixture.cs" />
+    <Compile Include="Interfaces\IGameweek.cs" />
+    <Compile Include="Interfaces\IHistory.cs" />
+    <Compile Include="Interfaces\IPlayer.cs" />
+    <Compile Include="Interfaces\IPlayerPosition.cs" />
+    <Compile Include="Mappers\PlayerModelMapper.cs" />
+    <Compile Include="Repositories\PlayerPositionRepository.cs" />
+    <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ITeam.cs" />
+    <Compile Include="Interfaces\ITeam.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="TeamRepository.cs" />
+    <Compile Include="Repositories\TeamRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -1,55 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
-using System.IO;
+using System.Reflection;
+using log4net;
+using log4net.Config;
 
 namespace FantasyPremierLeague
 {
     class Program
     {
         static void Main(string[] args)
-        {            
+        {
+            XmlConfigurator.Configure();
+
             try
             {
-                //Write Starting to console window
-                StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput());
-                standardOutput.AutoFlush = true;
-                //TextWriter tmp = Console.Out;
-                Console.SetOut(standardOutput);
-                Console.WriteLine("Starting...");
-
-                //Read the filepath from the App.Settings
-                string filePath = ReadSetting("logFilePath");
-
-                if (filePath.Substring(filePath.Length - 1, 1) != "\\")
-                {
-                    filePath = filePath + "\\";
-                }
-
-                string timestamp = DateTime.Now.ToString("yyyyMMdd");
-
-                //Create the full filepath and filename, including the datestamp
-                filePath = filePath + "FantasyPremierLeague" + timestamp + ".log";
-
-                //Redirect Console.WriteLine statements to log file
-                FileStream filestream = new FileStream(filePath, FileMode.Create);
-                StreamWriter streamwriter = new StreamWriter(filestream);
-                streamwriter.AutoFlush = true;
-                Console.SetOut(streamwriter);
-                Console.SetError(streamwriter);
-
-                Console.WriteLine("Starting...");
+                Logger.Out("Starting...");
+                Logger.Out("");
 
                 //Load Bootstrap data
-                Console.WriteLine("Starting Bootstrap data load");
-                //Logger.Out("Starting Bootstrap data load");
+                //Console.WriteLine("Starting Bootstrap data load");
+                Logger.Out("Starting Bootstrap data load");
+                Logger.Out("");
 
                 FantasyPremierLeagueAPIClient.GetPlayerBootstrapDataJson();
 
-                Console.WriteLine("Bootstrap data load complete");
-                Console.WriteLine("");
+                Logger.Out("Bootstrap data load complete");
+                Logger.Out("");
 
-                Console.WriteLine("Starting Player data load");
+                Logger.Out("Starting Player data load");
+                Logger.Out("");
 
                 string playerName;
 
@@ -74,45 +55,63 @@ namespace FantasyPremierLeague
                 {
                     playerName = player.GetPlayerName(playerID);
 
-                    Console.WriteLine(playerName);
+                    Logger.Out(playerName);
 
                     // Get the fantasyPremierLeaguePl1ayerData using JSON.NET
                     FantasyPremierLeagueAPIClient.GetPlayerDataJson(playerID);
 
-                    Console.WriteLine("");
+                    Logger.Out("");
                 }
 
-                Console.WriteLine("Player data load complete");
-                Console.WriteLine("");
-                
-                Console.WriteLine("Finished!!!");
+                Logger.Out("Player data load complete");
+                Logger.Out("");
 
-                // Recover the standard output stream so that a 
-                // completion message can be displayed.
-                Console.SetOut(standardOutput);
-                Console.WriteLine("Finished!!!");
-
-                streamwriter.Close();
-                filestream.Dispose();
+                Logger.Out("Finished!!!");
 
                 //// Wait for user input - keep the program running
                 Console.ReadKey();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                Logger.Error(ex.Message);
                 throw ex;
             }
         }
 
-        public static string ReadSetting(string key)
+        //public static string ReadSetting(string key)
+        //{
+        //    try
+        //    {
+        //        var appSettings = ConfigurationManager.AppSettings;
+
+        //        string result = appSettings[key] ?? "Not Found";
+
+        //        return result;
+        //    }
+        //    catch (ConfigurationErrorsException ex)
+        //    {
+        //        Console.WriteLine("Error reading app settings");
+        //        Logger.Error("Error reading app settings: " + ex.Message);
+        //        throw;
+        //    }
+        //}
+
+        public static NameValueCollection ConfigSettings(string section)
         {
             try
             {
-                var appSettings = ConfigurationManager.AppSettings;
+                var configSettings = ConfigurationManager.GetSection(section) as NameValueCollection;
+                String[] configStrings = new String[configSettings.Count];
 
-                string result = appSettings[key] ?? "Not Found";
+                // Copies the values to a string array and displays the string array.
+                configSettings.CopyTo(configStrings, 0);
 
-                 return result;
+                return configSettings;
+
+                //foreach (var key in configSettings.AllKeys)
+                //{
+                //    Console.WriteLine(key + " = " + applicationSettings[key]);
+                //}
             }
             catch (ConfigurationErrorsException)
             {
@@ -121,45 +120,45 @@ namespace FantasyPremierLeague
             }
         }
 
-        public class Logger
+        public static NameValueCollection AppSettings()
         {
-            //public static StringBuilder LogString = new StringBuilder();
-            //public static void Out(string str)
-            //{
-            //    Console.WriteLine(str);
-            //    LogString.Append(str).Append(Environment.NewLine);
-            //}
+            NameValueCollection appSettings = new NameValueCollection();
 
-            public static void Out(string filePath)
+            //Read the filepath from the App.Settings
+            appSettings = ConfigSettings("appSettings");
+            string filePath = appSettings["logFilePath"];
+            return appSettings;
+        }
+    }
+
+    public static class Logger
+    {
+        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static void Out(string LogText)
+        {
+            try
             {
-                FileStream ostrm;
-                StreamWriter writer;
-                TextWriter oldOut = Console.Out;
-
-                try
-                {
-                    ostrm = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
-                    writer = new StreamWriter(ostrm);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Cannot open " + filePath + " for writing");
-                    Console.WriteLine(e.Message);
-                    return;
-                }
-
-                Console.SetOut(writer);
-
-                //Console.WriteLine("This is a line of text");
-                //Console.WriteLine("Everything written to Console.Write() or");
-                //Console.WriteLine("Console.WriteLine() will be written to a file");
-
-                Console.SetOut(oldOut);
-                writer.Close();
-                ostrm.Close();
-                //Console.WriteLine("Done");
+                // do the actual work
+                _log.Info(LogText);
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
+        public static void Error(string LogText)
+        {
+            try
+            {
+                // do the actual work
+                _log.Error(LogText);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

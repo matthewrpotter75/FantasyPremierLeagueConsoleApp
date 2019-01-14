@@ -5,13 +5,12 @@ using System.Configuration;
 using System.Data;
 using Dapper;
 using DapperExtensions;
-using System.Linq;
 
 namespace FantasyPremierLeague
 {
-    public class HistoryRepository : IHistory
+    public class GameweekRepository : IGameweek
     {
-        public bool InsertHistory(History history)
+        public bool InsertGameweek(Gameweek gameweek)
         {
             try
             {
@@ -19,111 +18,91 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsAffected = db.Insert(history);
+                    rowsAffected = db.Insert(gameweek);
                 }
 
                 if (rowsAffected > 0)
                 {
-                    Console.WriteLine("History Gameweek " + Convert.ToString(history.round) + " - inserted");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Gameweek Repository (insert): " + ex.Message);
                 throw ex;
             }
         }
 
-        public bool UpdateHistory(History history)
+        public bool UpdateGameweek(Gameweek gameweek)
         {
             try
             {
-                bool rowsUpdated = false;
+                bool rowUpdated = false;
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsUpdated = db.Update(history);
+                    rowUpdated = db.Update(gameweek);
                 }
 
-                if (rowsUpdated == true)
+                if (rowUpdated == true)
                 {
-                    Console.WriteLine("History Gameweek " + Convert.ToString(history.round) + " - updated");
+                    Console.WriteLine(gameweek.name + " - updated");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Gameweek Repository (update): " + ex.Message);
                 throw ex;
             }
         }
 
-        public bool DeleteHistory(int historyId)
+        public bool DeleteGameweek(int gameweekId)
         {
             try
             {
-                bool rowsDeleted = false;
+                bool rowDeleted = false;
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsDeleted = db.Delete(new History() { id = historyId });
+                    rowDeleted = db.Delete(new Gameweek() { id = gameweekId });
                 }
 
-                if (rowsDeleted == true)
+                if (rowDeleted == true)
                 {
-                    Console.WriteLine("History " + Convert.ToString(historyId) + " - deleted");
+                    Console.WriteLine("Gameweek" + Convert.ToString(gameweekId) + " - deleted");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Gameweek Repository (delete): " + ex.Message);
                 throw ex;
             }
         }
 
-        public bool DeleteAllPlayerHistory(int playerId)
+        public List<int> GetAllGameweekIds()
         {
             try
             {
-                string playerName;
-                int rowsDeleted;
-
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    //rowsDeleted = db.Delete(new History() { element = playerId });
-                    string deleteQuery = "DELETE FROM dbo.PlayerHistory WHERE playerId = @PlayerId;";
-                    rowsDeleted = db.Execute(deleteQuery, new { PlayerId = playerId });
+                    string selectQuery = @"SELECT id FROM dbo.gameweeks";
 
-                    var player = db.Get<Player>(playerId);
-                    playerName = player.first_name + " " + player.second_name;
-                }
+                    IDataReader reader = db.ExecuteReader(selectQuery);
 
-                if (rowsDeleted > 0)
-                {
-                    Console.WriteLine("Player's history " + playerName + "(" + Convert.ToString(playerId) + ") - deleted");
-                    return true;
+                    List<int> result = ReadList(reader);
+
+                    return result;
                 }
-                return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Gameweek Repository (GetAllGameweekIds): " + ex.Message);
                 throw ex;
-            }
-        }
-
-        public List<int> GetAllHistoryIds()
-        {
-            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
-            {
-                string selectQuery = @"SELECT id FROM dbo.PlayerHistory";
-
-                IDataReader reader = db.ExecuteReader(selectQuery);
-
-                List<int> result = ReadList(reader);
-
-                return result;
             }
         }
 

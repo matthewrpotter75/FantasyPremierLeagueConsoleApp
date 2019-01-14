@@ -23,13 +23,15 @@ namespace FantasyPremierLeague
 
                 if (rowsInserted > 0)
                 {
-                    Console.WriteLine("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - inserted");
+                    //Console.WriteLine("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - inserted");
+                    Logger.Out("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - inserted");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Fixture Repository (insert): " + ex.Message);
                 throw ex;
             }
         }
@@ -47,13 +49,15 @@ namespace FantasyPremierLeague
 
                 if (rowsUpdated == true)
                 {
-                    Console.WriteLine("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - updated");
+                    //Console.WriteLine("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - updated");
+                    Logger.Out("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - updated");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Fixture Repository (update): " + ex.Message);
                 throw ex;
             }
         }
@@ -71,42 +75,60 @@ namespace FantasyPremierLeague
 
                 if (rowsDeleted == true)
                 {
-                    Console.WriteLine("Fixture " + Convert.ToString(fixtureId) + " - deleted");
+                    //Console.WriteLine("Fixture " + Convert.ToString(fixtureId) + " - deleted");
+                    Logger.Out("Fixture Gameweek " + Convert.ToString(fixtureId) + " - deleted");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Fixture Repository (delete): " + ex.Message);
                 throw ex;
             }
         }
 
         public List<int> GetAllFixtureIds()
         {
-            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+            try
             {
-                string selectQuery = @"SELECT id FROM dbo.fixtures";
+                using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+                {
+                    string selectQuery = @"SELECT id FROM dbo.fixtures";
 
-                IDataReader reader = db.ExecuteReader(selectQuery);
+                    IDataReader reader = db.ExecuteReader(selectQuery);
 
-                List<int> result = ReadList(reader);
+                    List<int> result = ReadList(reader);
 
-                return result;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Fixture Repository (GetAllFixtureIds): " + ex.Message);
+                throw ex;
             }
         }
 
         public List<string> GetAllFixtureOpponentShortName(int fixtureId)
         {
-            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+            try
             {
-                string selectQuery = @"SELECT opponent_short_name FROM dbo.Fixtures WHERE id = " + fixtureId.ToString();
+                using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+                {
+                    string selectQuery = @"SELECT opponent_short_name FROM dbo.Fixtures WHERE id = " + fixtureId.ToString();
 
-                IDataReader reader = db.ExecuteReader(selectQuery);
+                    IDataReader reader = db.ExecuteReader(selectQuery);
 
-                List<string> result = ReadStringList(reader);
+                    List<string> result = ReadStringList(reader);
 
-                return result;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Fixture Repository (GetAllFixtureOpponentShortName): " + ex.Message);
+                throw ex;
             }
         }
 

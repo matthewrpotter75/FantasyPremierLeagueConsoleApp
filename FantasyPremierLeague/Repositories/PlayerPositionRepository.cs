@@ -4,13 +4,13 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
 using Dapper;
-using DapperExtensions;
+using Dapper.Contrib.Extensions;
 
 namespace FantasyPremierLeague
 {
-    public class GameweekRepository : IGameweek
+    public class PlayerPositionRepository : IPlayerPosition
     {
-        public bool InsertGameweek(Gameweek gameweek)
+        public bool InsertPlayerPosition(PlayerPosition playerPosition)
         {
             try
             {
@@ -18,7 +18,7 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsAffected = db.Insert(gameweek);
+                    rowsAffected = db.Insert(playerPosition);
                 }
 
                 if (rowsAffected > 0)
@@ -29,11 +29,12 @@ namespace FantasyPremierLeague
             }
             catch (Exception ex)
             {
+                Logger.Error("Player Position Repository (insert): " + ex.Message);
                 throw ex;
             }
         }
 
-        public bool UpdateGameweek(Gameweek gameweek)
+        public bool UpdatePlayerPosition(PlayerPosition playerPosition)
         {
             try
             {
@@ -41,23 +42,24 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowUpdated = db.Update(gameweek);
+                    rowUpdated = db.Update(playerPosition);
                 }
 
                 if (rowUpdated == true)
                 {
-                    Console.WriteLine(gameweek.name + " - updated");
+                    Console.WriteLine(playerPosition.singular_name + " (" + playerPosition.singular_name_short + ") - updated");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Player Position Repository (update): " + ex.Message);
                 throw ex;
             }
         }
 
-        public bool DeleteGameweek(int gameweekId)
+        public bool DeletePlayerPosition(int playerPositionId)
         {
             try
             {
@@ -65,33 +67,42 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowDeleted = db.Delete(new Gameweek() { id = gameweekId });
+                    rowDeleted = db.Delete(new PlayerPosition() { id = playerPositionId });
                 }
 
                 if (rowDeleted == true)
                 {
-                    Console.WriteLine("Gameweek" + Convert.ToString(gameweekId) + " - deleted");
+                    Console.WriteLine(Convert.ToString(playerPositionId) + " - deleted");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
+                Logger.Error("Player Position Repository (delete): " + ex.Message);
                 throw ex;
             }
         }
 
-        public List<int> GetAllGameweekIds()
+        public List<int> GetAllPlayerPositionIds()
         {
-            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+            try
             {
-                string selectQuery = @"SELECT id FROM dbo.gameweeks";
+                using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+                {
+                    string selectQuery = @"SELECT id FROM dbo.PlayerPositions";
 
-                IDataReader reader = db.ExecuteReader(selectQuery);
+                    IDataReader reader = db.ExecuteReader(selectQuery);
 
-                List<int> result = ReadList(reader);
+                    List<int> result = ReadList(reader);
 
-                return result;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Player Position Repository (GetAllPlayerPositionIds): " + ex.Message);
+                throw ex;
             }
         }
 

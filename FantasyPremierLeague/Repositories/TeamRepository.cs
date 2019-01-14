@@ -29,6 +29,7 @@ namespace FantasyPremierLeague
             }
             catch (Exception ex)
             {
+                Logger.Error("Team Repository (insert): " + ex.Message);
                 throw ex;
             }
         }
@@ -53,6 +54,7 @@ namespace FantasyPremierLeague
             }
             catch (Exception ex)
             {
+                Logger.Error("Team Repository (update): " + ex.Message);
                 throw ex;
             }
         }
@@ -76,21 +78,30 @@ namespace FantasyPremierLeague
             }
             catch (Exception ex)
             {
+                Logger.Error("Team Repository (delete): " + ex.Message);
                 throw ex;
             }
         }
 
         public List<int> GetAllTeamIds()
         {
-            using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+            try
             {
-                string selectQuery = @"SELECT id FROM dbo.Teams";
+                using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+                {
+                    string selectQuery = @"SELECT id FROM dbo.Teams";
 
-                IDataReader reader = db.ExecuteReader(selectQuery);
+                    IDataReader reader = db.ExecuteReader(selectQuery);
 
-                List<int> result = ReadList(reader);
+                    List<int> result = ReadList(reader);
 
-                return result;
+                    return result;
+                }
+            }
+            catch (SqlException ex)
+            {
+                Logger.Error("Team Repository (GetAllTeamIds): " + ex.Message);
+                throw ex;
             }
         }
 
