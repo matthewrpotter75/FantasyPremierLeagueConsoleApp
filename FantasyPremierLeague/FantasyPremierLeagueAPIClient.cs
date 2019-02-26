@@ -98,6 +98,7 @@ namespace FantasyPremierLeague
                     Logger.Out("Starting Players load");
 
                     PlayerRepository playerRepository = new PlayerRepository();
+                    PlayerPricesRepository playerPricesRepository = new PlayerPricesRepository();
 
                     List<int> playerIds = playerRepository.GetAllPlayerIds();
 
@@ -110,6 +111,7 @@ namespace FantasyPremierLeague
                     {
                         historyRepository.DeleteAllPlayerHistory(playerId);
                         playerRepository.DeletePlayer(playerId);
+                        //playerPricesRepository.DeletePlayerPrices(playerId);
                     }
 
                     //Insert and update players data
@@ -118,14 +120,12 @@ namespace FantasyPremierLeague
                         if (!playerIds.Contains(player.id))
                         {
                             playerRepository.InsertPlayer(player);
-
-                            Logger.Out(player.first_name + " " + player.second_name + " - inserted");
+                            //playerPricesRepository.InsertPlayerPrices(player);
                         }
                         else
                         {
                             playerRepository.UpdatePlayer(player);
-
-                            Logger.Out(player.first_name + " " + player.second_name + " - updated");
+                            //playerPricesRepository.UpdatePlayerPrices(player);
                         }
                     }
 
@@ -144,13 +144,11 @@ namespace FantasyPremierLeague
                         if (!gameweekIds.Contains(gameweek.id))
                         {
                             gameweekRepository.InsertGameweek(gameweek);
-
                             Logger.Out(gameweek.name + " - inserted");
                         }
                         else
                         {
                             gameweekRepository.UpdateGameweek(gameweek);
-
                             Logger.Out(gameweek.name + " - updated");
                         }
                     }

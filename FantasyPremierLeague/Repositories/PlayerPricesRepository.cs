@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace FantasyPremierLeague
 {
-    public class PlayerRepository : IPlayer
+    public class PlayerPricesRepository : IPlayerPrices
     {
-        public bool InsertPlayer(Player player)
+        public bool InsertPlayerPrices(Player player)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace FantasyPremierLeague
             }
         }
 
-        public bool UpdatePlayer(Player player)
+        public bool UpdatePlayerPrices(Player player)
         {
             try
             {
@@ -43,7 +43,6 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    db.Execute("UPDATE dbo.Players SET chance_of_playing_next_round = 0 WHERE chance_of_playing_next_round IS NULL;");
                     rowUpdated = db.Update(player);
                 }
 
@@ -60,14 +59,12 @@ namespace FantasyPremierLeague
             }
         }
 
-        public bool DeletePlayer(int playerId)
+        public bool DeletePlayerPrices(int playerId)
         {
             try
             {
                 string playerName;
-                //bool rowDeleted = false;
-                int rowsDeleted;
-                string deleteQuery;
+                bool rowDeleted = false;
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
@@ -78,22 +75,10 @@ namespace FantasyPremierLeague
                     //string querySQL = "SELECT first_name + ' ' + second_name FROM dbo.Players WHERE id = @PlayerId";
                     //playerName = db.Query(querySQL, new { PlayerId = playerId }).SingleOrDefault().ToString();
 
-                    //rowDeleted = db.Delete(new Player() { id = playerId });
-
-                    //Delete from PlayerHistory so can delete player from Players table
-                    deleteQuery = "DELETE FROM dbo.PlayerHistory WHERE playerId = @PlayerId;";
-                    rowsDeleted = db.Execute(deleteQuery, new { PlayerId = playerId });
-
-                    //Delete from HistoryPast so can delete player from Players table
-                    deleteQuery = "DELETE FROM dbo.HistoryPast WHERE playerId = @PlayerId;";
-                    rowsDeleted = db.Execute(deleteQuery, new { PlayerId = playerId });
-
-                    //Delete from Players table
-                    deleteQuery = "DELETE FROM dbo.Players WHERE id = @PlayerId;";
-                    rowsDeleted = db.Execute(deleteQuery, new { PlayerId = playerId });
+                    rowDeleted = db.Delete(new Player() { id = playerId });
                 }
 
-                if (rowsDeleted > 0)
+                if (rowDeleted == true)
                 {
                     Logger.Out("Player - " + playerName + "(" + Convert.ToString(playerId) + ") - deleted");
                     return true;
@@ -106,11 +91,11 @@ namespace FantasyPremierLeague
             }
         }
 
-        public List<int> GetAllPlayerIds()
+        public List<int> GetAllPlayerPricesIds()
         {
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
             {
-                string selectQuery = @"SELECT id FROM dbo.Players";
+                string selectQuery = @"SELECT playerid FROM dbo.PlayerPrices";
 
                 IDataReader reader = db.ExecuteReader(selectQuery);
 
@@ -120,11 +105,11 @@ namespace FantasyPremierLeague
             }
         }
 
-        public List<int> GetCompetedPlayerIds()
+        public List<int> GetCompletedPlayerIds()
         {
             using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
             {
-                string selectQuery = @"SELECT p.id FROM dbo.Players p INNER JOIN dbo.PlayerHistory ph ON p.id = ph.playerId INNER JOIN dbo.Gameweeks g ON ph.gameweekId = g.id WHERE g.id = (SELECT TOP 1 id FROM dbo.Gameweeks WHERE deadline_time < GETDATE() ORDER BY deadline_time DESC)";
+                string selectQuery = @"SELECT p.playerid FROM dbo.PlayerPrices p INNER JOIN dbo.PlayerHistory ph ON p.id = ph.playerId INNER JOIN dbo.Gameweeks g ON ph.gameweekId = g.id WHERE g.id = (SELECT TOP 1 id FROM dbo.Gameweeks WHERE deadline_time < GETDATE() ORDER BY deadline_time DESC)";
 
                 IDataReader reader = db.ExecuteReader(selectQuery);
 
@@ -137,7 +122,7 @@ namespace FantasyPremierLeague
         List<int> ReadList(IDataReader reader)
         {
             List<int> list = new List<int>();
-            int column = reader.GetOrdinal("id");
+            int column = reader.GetOrdinal("playerid");
 
             while (reader.Read())
             {

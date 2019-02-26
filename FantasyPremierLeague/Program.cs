@@ -13,6 +13,8 @@ namespace FantasyPremierLeague
         static void Main(string[] args)
         {
             XmlConfigurator.Configure();
+            //int playerIdforDebug;
+            string playerName = "";
 
             try
             {
@@ -31,8 +33,6 @@ namespace FantasyPremierLeague
 
                 Logger.Out("Starting Player data load");
                 Logger.Out("");
-
-                string playerName;
 
                 PlayerRepository player = new PlayerRepository();
                 List<int> playerIds = player.GetAllPlayerIds();
@@ -74,6 +74,7 @@ namespace FantasyPremierLeague
             catch (Exception ex)
             {
                 Logger.Error(ex.Message);
+                Logger.Error(playerName + " caused error!!!");
                 throw ex;
             }
         }

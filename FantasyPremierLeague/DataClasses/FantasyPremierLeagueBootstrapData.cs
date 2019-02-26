@@ -57,18 +57,19 @@ namespace FantasyPremierLeague
         public int? squad_number { get; set; }
         public string news { get; set; }
         public int now_cost { get; set; }
+        public DateTime? news_added { get; set; }
         public int? chance_of_playing_this_round { get; set; }
         public int? chance_of_playing_next_round { get; set; }
-        public decimal value_form { get; set; }
-        public decimal value_season { get; set; }
+        public string value_form { get; set; }
+        public string value_season { get; set; }
         public int cost_change_start { get; set; }
         public int cost_change_event { get; set; }
         public int cost_change_start_fall { get; set; }
         public int cost_change_event_fall { get; set; }
         public bool in_dreamteam { get; set; }
         public int dreamteam_count { get; set; }
-        public decimal selected_by_percent { get; set; }
-        public decimal form { get; set; }
+        public string selected_by_percent { get; set; }
+        public string form { get; set; }
         public int transfers_out { get; set; }
         public int transfers_in { get; set; }
         public int transfers_out_event { get; set; }
@@ -79,9 +80,9 @@ namespace FantasyPremierLeague
         public int loaned_out { get; set; }
         public int total_points { get; set; }
         public int event_points { get; set; }
-        public decimal points_per_game { get; set; }
-        public decimal? ep_this { get; set; }
-        public decimal? ep_next { get; set; }
+        public string points_per_game { get; set; }
+        public string ep_this { get; set; }
+        public string ep_next { get; set; }
         public bool special { get; set; }
         public int minutes { get; set; }
         public int goals_scored { get; set; }
@@ -96,10 +97,10 @@ namespace FantasyPremierLeague
         public int saves { get; set; }
         public int bonus { get; set; }
         public int bps { get; set; }
-        public decimal influence { get; set; }
-        public decimal creativity { get; set; }
-        public decimal threat { get; set; }
-        public decimal ict_index { get; set; }
+        public string influence { get; set; }
+        public string creativity { get; set; }
+        public string threat { get; set; }
+        public string ict_index { get; set; }
         public int ea_index { get; set; }
         //[JsonProperty("playerPositionId")]
         public int element_type { get; set; }
@@ -107,7 +108,7 @@ namespace FantasyPremierLeague
         public int team { get; set; }
     }
 
-    public class Formations
+public class Formations
     {
         [JsonProperty("1-5-2-3")]
         public List<List<int>> formation_1_5_2_3 { get; set; }

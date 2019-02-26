@@ -67,10 +67,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigSettings.cs" />
+    <Compile Include="Interfaces\IPlayerPrices.cs" />
     <Compile Include="Mappers\FixtureModelMapper.cs" />
     <Compile Include="Mappers\GameweekModelMapper.cs" />
     <Compile Include="Mappers\HistoryModelMapper.cs" />
     <Compile Include="Mappers\HistoryPastModelMapper.cs" />
+    <Compile Include="Mappers\PlayerPricesMapper.cs" />
     <Compile Include="Repositories\HistoryPastRepository.cs" />
     <Compile Include="Interfaces\IHistoryPast.cs" />
     <Compile Include="Mappers\Mappings.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Interfaces\IPlayerPosition.cs" />
     <Compile Include="Mappers\PlayerModelMapper.cs" />
     <Compile Include="Repositories\PlayerPositionRepository.cs" />
+    <Compile Include="Repositories\PlayerPricesRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
