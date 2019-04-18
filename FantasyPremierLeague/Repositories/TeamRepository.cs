@@ -91,7 +91,7 @@ namespace FantasyPremierLeague
                 {
                     string selectQuery = @"SELECT id FROM dbo.Teams";
 
-                    IDataReader reader = db.ExecuteReader(selectQuery);
+                    IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout: 300);
 
                     List<int> result = ReadList(reader);
 

@@ -112,7 +112,7 @@ namespace FantasyPremierLeague
             {
                 string selectQuery = @"SELECT id FROM dbo.Players";
 
-                IDataReader reader = db.ExecuteReader(selectQuery);
+                IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout: 300);
 
                 List<int> result = ReadList(reader);
 
@@ -126,7 +126,7 @@ namespace FantasyPremierLeague
             {
                 string selectQuery = @"SELECT p.id FROM dbo.Players p INNER JOIN dbo.PlayerHistory ph ON p.id = ph.playerId INNER JOIN dbo.Gameweeks g ON ph.gameweekId = g.id WHERE g.id = (SELECT TOP 1 id FROM dbo.Gameweeks WHERE deadline_time < GETDATE() ORDER BY deadline_time DESC)";
 
-                IDataReader reader = db.ExecuteReader(selectQuery);
+                IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout:300);
 
                 List<int> result = ReadList(reader);
 
@@ -156,7 +156,7 @@ namespace FantasyPremierLeague
                 //string selectQuery = @"SELECT first_name + ' ' + second_name FROM dbo.Players WHERE id = " + playerId.ToString();
 
                 //Player player = new Player();
-                var player = db.Get<Player>(playerId);
+                var player = db.Get<Player>(playerId, commandTimeout: 300);
 
                 string playerName = player.first_name + " " + player.second_name;
 

@@ -96,7 +96,7 @@ namespace FantasyPremierLeague
                 {
                     string selectQuery = @"SELECT id FROM dbo.fixtures";
 
-                    IDataReader reader = db.ExecuteReader(selectQuery);
+                    IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout: 300);
 
                     List<int> result = ReadList(reader);
 
@@ -118,7 +118,7 @@ namespace FantasyPremierLeague
                 {
                     string selectQuery = @"SELECT opponent_short_name FROM dbo.Fixtures WHERE id = " + fixtureId.ToString();
 
-                    IDataReader reader = db.ExecuteReader(selectQuery);
+                    IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout: 300);
 
                     List<string> result = ReadStringList(reader);
 
