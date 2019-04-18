@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyPremierLeague", "FantasyPremierLeague\FantasyPremierLeague.csproj", "{5F131941-0F89-463E-94E6-278517417071}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyPremierLeaguePlayers", "FantasyPremierLeague\FantasyPremierLeaguePlayers.csproj", "{5F131941-0F89-463E-94E6-278517417071}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {495D8F0D-8DDB-499C-B097-5FBF4136F14F}
 	EndGlobalSection
 EndGlobal
