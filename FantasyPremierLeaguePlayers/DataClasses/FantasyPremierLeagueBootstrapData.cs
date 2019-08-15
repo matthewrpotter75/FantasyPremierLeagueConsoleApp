@@ -15,22 +15,24 @@ namespace FantasyPremierLeague
     public class FantasyPremierLeagueBootstrapData
     {
         [DataMember]
-        public List<Month> phases { get; set; }
-        [DataMember]
-        //[JsonProperty("Players")]
-        public List<Player> elements { get; set; }
+        public List<Gameweek> events { get; set; }
         [DataMember]
         [JsonProperty("game-settings")]
         public GameSettings game_settings { get; set; }
         [DataMember]
-        [JsonProperty("total-players")]
-        public int total_players { get; set; }
+        public List<Month> phases { get; set; }
         [DataMember]
         public List<Team> teams { get; set; }
         [DataMember]
-        public List<PlayerPosition> element_types { get; set; }
+        [JsonProperty("total-players")]
+        public int total_players { get; set; }
         [DataMember]
-        public List<Gameweek> events { get; set; }
+        //[JsonProperty("Players")]
+        public List<Player> elements { get; set; }
+        [DataMember]
+        public List<PlayerStats> element_stats { get; set; }
+        [DataMember]
+        public List<PlayerPosition> element_types { get; set; }
     }
 
     //Phase
@@ -108,7 +110,7 @@ namespace FantasyPremierLeague
         public int team { get; set; }
     }
 
-public class Formations
+    public class Formations
     {
         [JsonProperty("1-5-2-3")]
         public List<List<int>> formation_1_5_2_3 { get; set; }
@@ -306,32 +308,32 @@ public class Formations
 
     public class Team
     {
+        public int code { get; set; }
+        public int draw { get; set; }
+        public int? form { get; set; }
         [ExplicitKey]
         public int id { get; set; }
-        [Write(false)]
-        public List<CurrentEventFixture> current_event_fixture { get; set; }
-        [Write(false)]
-        public List<object> next_event_fixture { get; set; }
-        public string name { get; set; }
-        public int code { get; set; }
-        public string short_name { get; set; }
-        public bool unavailable { get; set; }
-        public int strength { get; set; }
-        public int position { get; set; }
-        public int played { get; set; }
-        public int win { get; set; }
+        //[Write(false)]
+        //public List<CurrentEventFixture> current_event_fixture { get; set; }
+        //[Write(false)]
+        //public List<object> next_event_fixture { get; set; }
         public int loss { get; set; }
-        public int draw { get; set; }
+        public string name { get; set; }
+        public int played { get; set; }
         public int points { get; set; }
-        public int? form { get; set; }
-        public string link_url { get; set; }
+        public int position { get; set; }
+        public string short_name { get; set; }
+        public int strength { get; set; }
+        public int? team_division { get; set; }
+        public bool unavailable { get; set; }
+        public int win { get; set; }
+        //public string link_url { get; set; }
         public int strength_overall_home { get; set; }
         public int strength_overall_away { get; set; }
         public int strength_attack_home { get; set; }
         public int strength_attack_away { get; set; }
         public int strength_defence_home { get; set; }
         public int strength_defence_away { get; set; }
-        public int team_division { get; set; }
     }
 
     //ElementType
@@ -358,10 +360,35 @@ public class Formations
         public int? highest_scoring_entry { get; set; }
         public int deadline_time_epoch { get; set; }
         public int deadline_time_game_offset { get; set; }
-        public string deadline_time_formatted { get; set; }
+        //public string deadline_time_formatted { get; set; }
         public int? highest_score { get; set; }
         public bool is_previous { get; set; }
         public bool is_current { get; set; }
         public bool is_next { get; set; }
+        public List<GameweekChipStats> chip_plays { get; set; }
+        public int? most_selected { get; set; }
+        public int? most_transferred_in { get; set; }
+        public int? top_element { get; set; }
+        public int transfers_made { get; set; }
+        public int? most_captained { get; set; }
+        public int? most_vice_captained { get; set; }
     }
+
+    public class GameweekChipStats
+    {
+        public int id { get; set; }
+        public int gameweekid { get; set; }
+        public string chip_name { get; set; }
+        public int num_played { get; set; }
+    }
+
+    //element_stats
+    public class PlayerStats
+    {
+        [ExplicitKey]
+        public int id { get; set; }
+        public string label { get; set; }
+        public string name { get; set; }
+    }
+
 }

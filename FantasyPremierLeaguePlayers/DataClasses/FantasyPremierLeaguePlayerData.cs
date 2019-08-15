@@ -57,7 +57,7 @@ namespace FantasyPremierLeague
     public class FixturesSummary
     {
         public int id { get; set; }
-        public string kickoff_time_formatted { get; set; }
+        //public string kickoff_time_formatted { get; set; }
         public string event_name { get; set; }
         public string opponent_name { get; set; }
         public string opponent_short_name { get; set; }
@@ -219,7 +219,7 @@ namespace FantasyPremierLeague
     public class Fixture
     {
         public int id { get; set; }
-        public string kickoff_time_formatted { get; set; }
+        //public string kickoff_time_formatted { get; set; }
         public bool started { get; set; }
         public int event_day { get; set; }
         public DateTime deadline_time { get; set; }
@@ -248,7 +248,7 @@ namespace FantasyPremierLeague
     {
         public int id { get; set; }
         public DateTime kickoff_time { get; set; }
-        public string kickoff_time_formatted { get; set; }
+        //public string kickoff_time_formatted { get; set; }
         public int? team_h_score { get; set; }
         public int? team_a_score { get; set; }
         public bool was_home { get; set; }
@@ -306,7 +306,7 @@ namespace FantasyPremierLeague
     {
         public int fixtureid { get; set; }
         public int id { get; set; }
-        public string kickoff_time_formatted { get; set; }
+        //public string kickoff_time_formatted { get; set; }
         public string event_name { get; set; }
         public string opponent_name { get; set; }
         public string opponent_short_name { get; set; }
@@ -330,7 +330,7 @@ namespace FantasyPremierLeague
     {
         public int id { get; set; }
         public DateTime kickoff_time { get; set; }
-        public string kickoff_time_formatted { get; set; }
+        //public string kickoff_time_formatted { get; set; }
         public int? team_h_score { get; set; }
         public int? team_a_score { get; set; }
         public bool was_home { get; set; }

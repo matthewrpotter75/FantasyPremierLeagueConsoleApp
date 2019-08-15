@@ -3,19 +3,19 @@ using DapperExtensions.Mapper;
 
 namespace FantasyPremierLeague
 {
-    public static class GameweekModelMappings
+    public static class GameweekChipStatsMappings
     {
-        public class GameweekModelMapper : ClassMapper<Gameweek>
+        public class GameweekChipStatsMapper : ClassMapper<GameweekChipStats>
         {
-            public GameweekModelMapper()
+            public GameweekChipStatsMapper()
             {
                 //use different table name
-                Table("Gameweeks");
+                Table("GameweekChipStats");
 
-                Map(x => x.id).Key(KeyType.Assigned);
+                Map(x => x.gameweekid).Key(KeyType.Assigned);
 
                 //Ignore this property entirely
-                Map(x => x.chip_plays).Ignore();
+                Map(x => x.id).Ignore();
 
                 //optional, map all other columns
                 AutoMap();

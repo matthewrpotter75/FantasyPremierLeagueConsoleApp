@@ -13,8 +13,6 @@ namespace FantasyPremierLeague
         static void Main(string[] args)
         {
             XmlConfigurator.Configure();
-            //int playerIdforDebug;
-            string playerName = "";
 
             try
             {
@@ -22,7 +20,7 @@ namespace FantasyPremierLeague
                 Logger.Out("");
 
                 //Load Bootstrap data
-                //Console.WriteLine("Starting Bootstrap data load");
+                Console.WriteLine("Starting Bootstrap data load");
                 Logger.Out("Starting Bootstrap data load");
                 Logger.Out("");
 
@@ -34,36 +32,17 @@ namespace FantasyPremierLeague
                 Logger.Out("Starting Player data load");
                 Logger.Out("");
 
-                PlayerRepository player = new PlayerRepository();
-                List<int> playerIds = player.GetAllPlayerIds();
-                List<int> completedPlayerIds = player.GetCompetedPlayerIds();
-
-                //Only process unprocessed players
-                //List<int> toDoPlayerIds = playerIds.Except(completedPlayerIds).ToList();
-
-                //Process all players
-                List<int> toDoPlayerIds = playerIds;
-
-                //Remove when finished debugging
-                //int playerID = 176;
-                //playerName = player.GetPlayerName(playerID);
-                //Console.WriteLine(playerName);
-                //FantasyPremierLeagueAPIClient.GetPlayerDataJson(playerID);
-
-                //Load player fixture and history data
-                foreach (int playerID in toDoPlayerIds)
-                {
-                    playerName = player.GetPlayerName(playerID);
-
-                    Logger.Out(playerName);
-
-                    // Get the fantasyPremierLeaguePl1ayerData using JSON.NET
-                    FantasyPremierLeagueAPIClient.GetPlayerDataJson(playerID);
-
-                    Logger.Out("");
-                }
+                FantasyPremierLeagueAPIClient.GetPlayerData();
 
                 Logger.Out("Player data load complete");
+                Logger.Out("");
+
+                Logger.Out("Starting Fixtures data load");
+                Logger.Out("");
+
+                FantasyPremierLeagueAPIClient.GetFixtureDataJson();
+
+                Logger.Out("Fixtures data load complete");
                 Logger.Out("");
 
                 Logger.Out("Finished!!!");
@@ -74,7 +53,6 @@ namespace FantasyPremierLeague
             catch (Exception ex)
             {
                 Logger.Error(ex.Message);
-                Logger.Error(playerName + " caused error!!!");
                 throw ex;
             }
         }

@@ -67,12 +67,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigSettings.cs" />
+    <Compile Include="DataClasses\FantasyPremierLeagueFixtureData.cs" />
+    <Compile Include="Interfaces\IFixtureStat.cs" />
+    <Compile Include="Interfaces\IFixtureStatsValue.cs" />
+    <Compile Include="Interfaces\IGameweekChipStats.cs" />
     <Compile Include="Interfaces\IPlayerPrices.cs" />
+    <Compile Include="Interfaces\IPlayerStat.cs" />
+    <Compile Include="Mappers\FixtureMapper.cs" />
     <Compile Include="Mappers\FixtureModelMapper.cs" />
+    <Compile Include="Mappers\FixtureStatValueMapper.cs" />
+    <Compile Include="Mappers\FixtureStatsMapper.cs" />
+    <Compile Include="Mappers\GameweekChipStatsMapper.cs" />
     <Compile Include="Mappers\GameweekModelMapper.cs" />
     <Compile Include="Mappers\HistoryModelMapper.cs" />
     <Compile Include="Mappers\HistoryPastModelMapper.cs" />
     <Compile Include="Mappers\PlayerPricesMapper.cs" />
+    <Compile Include="Mappers\PlayerStatsMapper.cs" />
+    <Compile Include="Repositories\FixtureStatRepository.cs" />
+    <Compile Include="Repositories\FixtureStatValueRepository.cs" />
+    <Compile Include="Repositories\GameweekChipStatsRepository.cs" />
     <Compile Include="Repositories\HistoryPastRepository.cs" />
     <Compile Include="Interfaces\IHistoryPast.cs" />
     <Compile Include="Mappers\Mappings.cs" />
@@ -99,6 +112,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\PlayerStatsRepository.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
   </ItemGroup>
   <ItemGroup>

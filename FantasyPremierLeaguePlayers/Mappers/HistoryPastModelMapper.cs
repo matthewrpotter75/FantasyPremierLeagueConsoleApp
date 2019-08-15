@@ -18,10 +18,10 @@ namespace FantasyPremierLeague
                 //Map(x => x.fixture).Column("fixtureId");
                 //Map(x => x.opponent_team).Column("opponent_teamId");
 
-                Map(x => x.id).Key(KeyType.Assigned);
+                Map(x => x.element_code).Key(KeyType.Assigned);
 
                 //Ignore this property entirely
-                //Map(x => x.playerId).Ignore();
+                Map(x => x.id).Ignore();
 
                 //optional, map all other columns
                 AutoMap();

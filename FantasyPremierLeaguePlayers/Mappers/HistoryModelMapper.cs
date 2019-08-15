@@ -21,7 +21,7 @@ namespace FantasyPremierLeague
                 Map(x => x.id).Key(KeyType.Assigned);
 
                 //Ignore this property entirely
-                //Map(x => x.SecretDataMan).Ignore();
+                //Map(x => x.kickoff_time_formatted).Ignore();
 
                 //optional, map all other columns
                 AutoMap();

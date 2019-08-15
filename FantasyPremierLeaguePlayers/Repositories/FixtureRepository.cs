@@ -10,7 +10,7 @@ namespace FantasyPremierLeague
 {
     public class FixtureRepository : IFixture
     {
-        public bool InsertFixture(Fixture2 fixture)
+        public bool InsertFixture(FixtureData fixture)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace FantasyPremierLeague
                 if (rowsInserted > 0)
                 {
                     //Console.WriteLine("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - inserted");
-                    Logger.Out("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - inserted");
+                    Logger.Out("Fixture " + Convert.ToString(fixture.id) + " Gameweek " + Convert.ToString(fixture.@event) + " - inserted");
                     return true;
                 }
                 return false;
@@ -36,7 +36,7 @@ namespace FantasyPremierLeague
             }
         }
 
-        public bool UpdateFixture(Fixture2 fixture)
+        public bool UpdateFixture(FixtureData fixture)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace FantasyPremierLeague
                 if (rowsUpdated == true)
                 {
                     //Console.WriteLine("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - updated");
-                    Logger.Out("Fixture Gameweek " + Convert.ToString(fixture.@event) + " - updated");
+                    Logger.Out("Fixture " + Convert.ToString(fixture.id) + " Gameweek " + Convert.ToString(fixture.@event) + " - updated");
                     return true;
                 }
                 return false;
@@ -70,13 +70,13 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsDeleted = db.Delete(new Fixture2() { id = fixtureId });
+                    rowsDeleted = db.Delete(new FixtureData() { id = fixtureId });
                 }
 
                 if (rowsDeleted == true)
                 {
                     //Console.WriteLine("Fixture " + Convert.ToString(fixtureId) + " - deleted");
-                    Logger.Out("Fixture Gameweek " + Convert.ToString(fixtureId) + " - deleted");
+                    Logger.Out("Fixture " + Convert.ToString(fixtureId) + " Gameweek " + Convert.ToString(fixtureId) + " - deleted");
                     return true;
                 }
                 return false;
@@ -94,7 +94,7 @@ namespace FantasyPremierLeague
             {
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    string selectQuery = @"SELECT id FROM dbo.fixtures";
+                    string selectQuery = @"SELECT id FROM dbo.Fixture";
 
                     IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout: 300);
 
@@ -110,27 +110,27 @@ namespace FantasyPremierLeague
             }
         }
 
-        public List<string> GetAllFixtureOpponentShortName(int fixtureId)
-        {
-            try
-            {
-                using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
-                {
-                    string selectQuery = @"SELECT opponent_short_name FROM dbo.Fixtures WHERE id = " + fixtureId.ToString();
+        //public List<string> GetAllFixtureOpponentShortName(int fixtureId)
+        //{
+        //    try
+        //    {
+        //        using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+        //        {
+        //            string selectQuery = @"SELECT opponent_short_name FROM dbo.Fixtures WHERE id = " + fixtureId.ToString();
 
-                    IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout: 300);
+        //            IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout: 300);
 
-                    List<string> result = ReadStringList(reader);
+        //            List<string> result = ReadStringList(reader);
 
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Fixture Repository (GetAllFixtureOpponentShortName): " + ex.Message);
-                throw ex;
-            }
-        }
+        //            return result;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.Error("Fixture Repository (GetAllFixtureOpponentShortName): " + ex.Message);
+        //        throw ex;
+        //    }
+        //}
 
         List<int> ReadList(IDataReader reader)
         {
@@ -147,19 +147,19 @@ namespace FantasyPremierLeague
             return list;
         }
 
-        List<string> ReadStringList(IDataReader reader)
-        {
-            List<string> list = new List<string>();
-            int column = reader.GetOrdinal("opponent_short_name");
+        //List<string> ReadStringList(IDataReader reader)
+        //{
+        //    List<string> list = new List<string>();
+        //    int column = reader.GetOrdinal("opponent_short_name");
 
-            while (reader.Read())
-            {
-                //check for the null value and than add 
-                if (!reader.IsDBNull(column))
-                    list.Add(reader.GetString(column));
-            }
+        //    while (reader.Read())
+        //    {
+        //        //check for the null value and than add 
+        //        if (!reader.IsDBNull(column))
+        //            list.Add(reader.GetString(column));
+        //    }
 
-            return list;
-        }
+        //    return list;
+        //}
     }
 }
