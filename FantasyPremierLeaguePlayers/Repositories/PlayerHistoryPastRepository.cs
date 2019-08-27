@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace FantasyPremierLeague
 {
-    public class HistoryPastRepository : IHistoryPast
+    public class PlayerHistoryPastRepository : IPlayerHistoryPast
     {
-        public bool InsertHistoryPast(HistoryPast historyPast)
+        public bool InsertPlayerHistoryPast(PlayerHistoryPast playerHistoryPast)
         {
             try
             {
@@ -19,25 +19,25 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsAffected = db.Insert(historyPast);
+                    rowsAffected = db.Insert(playerHistoryPast);
                 }
 
                 if (rowsAffected > 0)
                 {
                     //Console.WriteLine("History Past " + historyPast.season_name + " - inserted");
-                    Logger.Out("History Past " + historyPast.season_name + " - inserted");
+                    Logger.Out("PlayerHistoryPast: " + playerHistoryPast.season_name + " - inserted");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
-                Logger.Error("History Past Repository (insert): " + ex.Message);
-                throw new Exception("Insert History Past exception", ex);
+                Logger.Error("PlayerHistoryPast Repository (insert): " + ex.Message);
+                throw new Exception("Insert PlayerHistoryPast exception", ex);
             }
         }
 
-        public bool UpdateHistoryPast(HistoryPast historyPast)
+        public bool UpdatePlayerHistoryPast(PlayerHistoryPast playerHistoryPast)
         {
             try
             {
@@ -45,25 +45,25 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsUpdated = db.Update(historyPast);
+                    rowsUpdated = db.Update(playerHistoryPast);
                 }
 
                 if (rowsUpdated == true)
                 {
                     //Console.WriteLine("History Past " + historyPast.season_name + " - updated");
-                    Logger.Out("History Past " + historyPast.season_name + " - updated");
+                    Logger.Out("PlayerHistoryPast: " + playerHistoryPast.season_name + " - updated");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
-                Logger.Error("History Past Repository (update): " + ex.Message);
-                throw new Exception("Update History Past exception", ex);
+                Logger.Error("PlayerHistoryPast Repository (update): " + ex.Message);
+                throw new Exception("Update PlayerHistoryPast exception", ex);
             }
         }
 
-        public bool DeleteHistoryPast(int historyPastId)
+        public bool DeletePlayerHistoryPast(int playerHistoryPastId)
         {
             try
             {
@@ -71,19 +71,19 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsDeleted = db.Delete(new HistoryPast() { id = historyPastId });
+                    rowsDeleted = db.Delete(new PlayerHistoryPast() { id = playerHistoryPastId });
                 }
 
                 if (rowsDeleted == true)
                 {
-                    Console.WriteLine("History " + historyPastId + " - deleted");
+                    Console.WriteLine("PlayerHistoryPast: " + playerHistoryPastId + " - deleted");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
-                Logger.Error("History Past Repository (delete): " + ex.Message);
+                Logger.Error("PlayerHistoryPast Repository (delete): " + ex.Message);
                 throw ex;
             }
         }
@@ -98,7 +98,7 @@ namespace FantasyPremierLeague
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
                     //rowsDeleted = db.Delete(new History() { element = playerId });
-                    string deleteQuery = "DELETE FROM dbo.HistoryPast WHERE playerId = @PlayerId;";
+                    string deleteQuery = "DELETE FROM dbo.PlayerHistoryPast WHERE playerId = @PlayerId;";
                     rowsDeleted = db.Execute(deleteQuery, new { PlayerId = playerId });
 
                     var player = db.Get<Player>(playerId);
@@ -108,50 +108,50 @@ namespace FantasyPremierLeague
                 if (rowsDeleted > 0)
                 {
                     //Console.WriteLine("History Past - " + playerName + "(" + Convert.ToString(playerId) + ") - deleted");
-                    Logger.Out("History Past - " + playerName + "(" + Convert.ToString(playerId) + ") - deleted");
+                    Logger.Out("PlayerHistoryPast: " + playerName + "(" + Convert.ToString(playerId) + ") - deleted");
                     return true;
                 }
                 return false;
             }
             catch (Exception ex)
             {
-                Logger.Error("History Past Repository (DeleteAllHistoryPast): " + ex.Message);
+                Logger.Error("PlayerHistoryPast Repository (DeleteAllHistoryPast): " + ex.Message);
                 throw ex;
             }
         }
 
-        public List<int> GetAllHistoryPastIds()
+        public List<string> GetAllPlayerHistoryPastSeasons(int playerId)
         {
             try
             {
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    string selectQuery = @"SELECT id FROM dbo.HistoryPast";
+                    string selectQuery = @"SELECT season_name FROM dbo.PlayerHistoryPast WHERE playerid = @PlayerId";
 
-                    IDataReader reader = db.ExecuteReader(selectQuery, commandTimeout: 300);
+                    IDataReader reader = db.ExecuteReader(selectQuery, new { PlayerId = playerId }, commandTimeout: 300);
 
-                    List<int> result = ReadList(reader);
+                    List<string> result = ReadStringList(reader);
 
                     return result;
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("History Past Repository (GetAllHistoryPastIds): " + ex.Message);
+                Logger.Error("PlayerHistoryPast Repository (GetAllPlayerHistoryPastSeasons): " + ex.Message);
                 throw ex;
             }
         }
 
-        List<int> ReadList(IDataReader reader)
+        List<string> ReadStringList(IDataReader reader)
         {
-            List<int> list = new List<int>();
-            int column = reader.GetOrdinal("id");
+            List<string> list = new List<string>();
+            int column = reader.GetOrdinal("season_name");
 
             while (reader.Read())
             {
                 //check for the null value and than add 
                 if (!reader.IsDBNull(column))
-                    list.Add(reader.GetInt32(column));
+                    list.Add(reader.GetString(column));
             }
 
             return list;

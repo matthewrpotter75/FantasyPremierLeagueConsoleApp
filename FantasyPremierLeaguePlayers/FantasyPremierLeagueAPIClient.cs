@@ -101,11 +101,11 @@ namespace FantasyPremierLeague
                     //Delete player history and player records for players no longer in the Premier League
                     List<int> inputPlayerIds = fantasyPremierLeagueBootstrapData.elements.Select(x => x.id).ToList();
                     List<int> playersToDelete = playerIds.Except(inputPlayerIds).ToList();
-                    HistoryRepository historyRepository = new HistoryRepository();
+                    PlayerHistoryRepository historyRepository = new PlayerHistoryRepository();
 
                     foreach (int playerId in playersToDelete)
                     {
-                        historyRepository.DeleteAllPlayerHistory(playerId);
+                        historyRepository.DeleteAllPlayerHistoryForPlayerId(playerId);
                         playerRepository.DeletePlayer(playerId);
                         //playerPricesRepository.DeletePlayerPrices(playerId);
                     }
@@ -228,21 +228,21 @@ namespace FantasyPremierLeague
                     //var fantasyPremierLeaguePlayerData = JsonConvert.DeserializeObject< FantasyPremierLeaguePlayerData>(reader);
 
                     //Load player history data
-                    HistoryRepository historyRepository = new HistoryRepository();
+                    PlayerHistoryRepository playerHistoryRepository = new PlayerHistoryRepository();
 
-                    List<int> historyIds = historyRepository.GetAllHistoryIds();
-
-                    foreach (History history in fantasyPremierLeaguePlayerData.history)
+                    foreach (PlayerHistory playerHistory in fantasyPremierLeaguePlayerData.history)
                     {
-                        if (!historyIds.Contains(history.id))
+                        List<int> playerHistoryGameweekIds = playerHistoryRepository.GetPlayerHistoryGameweekIdsForPlayerId(playerHistory.element);
+
+                        if (!playerHistoryGameweekIds.Contains(playerHistory.round))
                         {
-                            historyRepository.InsertHistory(history);
+                            playerHistoryRepository.InsertPlayerHistory(playerHistory);
                             //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
                             //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
                         }
                         //else
                         //{
-                        //    historyRepository.UpdateHistory(history);
+                        //    playerHistoryRepository.UpdateHistory(history);
                         //    //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - updated");
                         //    //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - updated");
                         //}
@@ -275,22 +275,22 @@ namespace FantasyPremierLeague
                     //Logger.Out("");
 
                     //Load history past data
-                    HistoryPastRepository historyPastRepository = new HistoryPastRepository();
+                    PlayerHistoryPastRepository playerHistoryPastRepository = new PlayerHistoryPastRepository();
 
-                    List<int> historyPastIds = historyPastRepository.GetAllHistoryPastIds();
+                    List<string> historyPastSeasons = playerHistoryPastRepository.GetAllPlayerHistoryPastSeasons(playerID);
 
-                    foreach (HistoryPast historyPast in fantasyPremierLeaguePlayerData.history_past)
+                    foreach (PlayerHistoryPast playerHistoryPast in fantasyPremierLeaguePlayerData.history_past)
                     {
-                        historyPast.playerId = playerID;
-                        if (!historyPastIds.Contains(historyPast.id))
+                        playerHistoryPast.playerId = playerID;
+                        if (!historyPastSeasons.Contains(playerHistoryPast.season_name))
                         {
-                            historyPastRepository.InsertHistoryPast(historyPast);
+                            playerHistoryPastRepository.InsertPlayerHistoryPast(playerHistoryPast);
                             //Logger.Out("PlayerId(" + Convert.ToString(playerID) + ") - inserted");
                             //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - inserted");
                         }
                         //else
                         //{
-                        //    historyPastRepository.UpdateHistoryPast(historyPast);
+                        //    historyPastRepository.UpdatePlayerHistoryPast(historyPast);
                         //    //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - updated");
                         //    //Console.WriteLine("PlayerId (" + Convert.ToString(playerID) + ") - updated");
                         //}
@@ -366,7 +366,7 @@ namespace FantasyPremierLeague
                 {
                     // read the json from a stream
                     // json size doesn't matter because only a small piece is read at a time from the HTTP request
-                    var fantasyPremierLeagueFixtureData = serializer.Deserialize<List<FixtureData>>(reader);
+                    var fantasyPremierLeagueFixtureData = serializer.Deserialize<List<Fixture>>(reader);
                     //var fantasyPremierLeagueFixtureData = JsonConvert.DeserializeObject< List<FantasyPremierLeagueFixtureData>>(reader);
 
                     //Load Fixtures data
@@ -378,7 +378,7 @@ namespace FantasyPremierLeague
 
                     int fixtureId = 0;
 
-                    foreach (FixtureData fixture in fantasyPremierLeagueFixtureData)
+                    foreach (Fixture fixture in fantasyPremierLeagueFixtureData)
                     {
                         fixtureId = fixture.id;
 

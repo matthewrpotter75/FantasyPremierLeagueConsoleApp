@@ -10,7 +10,7 @@ namespace FantasyPremierLeague
 {
     public class FixtureRepository : IFixture
     {
-        public bool InsertFixture(FixtureData fixture)
+        public bool InsertFixture(Fixture fixture)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace FantasyPremierLeague
             }
         }
 
-        public bool UpdateFixture(FixtureData fixture)
+        public bool UpdateFixture(Fixture fixture)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace FantasyPremierLeague
 
                 using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
                 {
-                    rowsDeleted = db.Delete(new FixtureData() { id = fixtureId });
+                    rowsDeleted = db.Delete(new Fixture() { id = fixtureId });
                 }
 
                 if (rowsDeleted == true)

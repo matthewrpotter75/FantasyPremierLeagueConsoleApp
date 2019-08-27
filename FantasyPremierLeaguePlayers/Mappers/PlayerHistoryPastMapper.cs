@@ -3,14 +3,14 @@ using DapperExtensions.Mapper;
 
 namespace FantasyPremierLeague
 {
-    public static class HistoryPastModelMappings
+    public static class PlayerHistoryPastMappings
     {
-        public class HistoryPastModelMapper : ClassMapper<HistoryPast>
+        public class PlayerHistoryPastMapper : ClassMapper<PlayerHistoryPast>
         {
-            public HistoryPastModelMapper()
+            public PlayerHistoryPastMapper()
             {
                 //use different table name
-                Table("HistoryPast");
+                Table("PlayerHistoryPast");
 
                 //Use a different name property from database column
                 //Map(x => x.round).Column("gameweekId");
