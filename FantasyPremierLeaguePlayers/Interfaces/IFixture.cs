@@ -8,8 +8,8 @@ namespace FantasyPremierLeague
 {
     public interface IFixture
     {
-        bool InsertFixture(FixtureData fixture);
-        bool UpdateFixture(FixtureData fixture);
+        bool InsertFixture(Fixture fixture);
+        bool UpdateFixture(Fixture fixture);
         bool DeleteFixture(int fixtureId);
     }
 }

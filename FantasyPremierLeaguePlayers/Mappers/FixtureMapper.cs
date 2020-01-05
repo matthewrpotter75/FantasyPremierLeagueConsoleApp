@@ -5,7 +5,7 @@ namespace FantasyPremierLeague
 {
     public static class FixtureMappings
     {
-        public class FixtureMapper : ClassMapper<FixtureData>
+        public class FixtureMapper : ClassMapper<Fixture>
         {
             public FixtureMapper()
             {

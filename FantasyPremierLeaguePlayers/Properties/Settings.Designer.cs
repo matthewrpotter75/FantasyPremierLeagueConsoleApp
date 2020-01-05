@@ -12,7 +12,7 @@ namespace FantasyPremierLeague.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.2.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,8 +26,8 @@ namespace FantasyPremierLeague.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=MATTASUS\\SQL2014;Initial Catalog=FantasyPremierLeague;User ID=Fantasy" +
-            "PremierLeague;Password=\"5FPdaU5rP1WgH6xK4KRFNDodlkwY2KsUsDqNXQN4ZGw=\"")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=MATTASUS\\SQL2017;Initial Catalog=FantasyPremierLeague;User ID=Fantasy" +
+            "PremierLeague;Password=\"|hUxse{l%qqgKc{yiaGoNhcimsFT7_#$!~£4hzMegeuezuS\"")]
         public string Setting {
             get {
                 return ((string)(this["Setting"]));

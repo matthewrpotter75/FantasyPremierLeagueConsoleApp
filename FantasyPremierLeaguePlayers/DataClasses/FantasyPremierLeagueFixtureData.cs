@@ -8,11 +8,10 @@ namespace FantasyPremierLeague
     public class FantasyPremierLeagueFixtureData
     {
         [DataMember]
-        //public List<FixtureData> fixtures { get; set; }
-        public FixtureData fixture { get; set; }
+        public Fixture fixture { get; set; }
     }
 
-    public class FixtureData
+    public class Fixture
     {
         public int code { get; set; }
         public int @event { get; set; }

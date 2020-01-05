@@ -20,7 +20,7 @@ namespace FantasyPremierLeague
                 Logger.Out("");
 
                 //Load Bootstrap data
-                Console.WriteLine("Starting Bootstrap data load");
+                //Console.WriteLine("Starting Bootstrap data load");
                 Logger.Out("Starting Bootstrap data load");
                 Logger.Out("");
 
@@ -37,15 +37,15 @@ namespace FantasyPremierLeague
                 Logger.Out("Player data load complete");
                 Logger.Out("");
 
-                Logger.Out("Starting Fixtures data load");
-                Logger.Out("");
+                //Logger.Out("Starting Fixtures data load");
+                //Logger.Out("");
 
-                FantasyPremierLeagueAPIClient.GetFixtureDataJson();
+                //FantasyPremierLeagueAPIClient.GetFixtureDataJson();
 
-                Logger.Out("Fixtures data load complete");
-                Logger.Out("");
+                //Logger.Out("Fixtures data load complete");
+                //Logger.Out("");
 
-                Logger.Out("Finished!!!");
+                //Logger.Out("Finished!!!");
 
                 //// Wait for user input - keep the program running
                 Console.ReadKey();

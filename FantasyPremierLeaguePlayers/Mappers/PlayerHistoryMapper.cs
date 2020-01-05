@@ -3,11 +3,11 @@ using DapperExtensions.Mapper;
 
 namespace FantasyPremierLeague
 {
-    public static class HistoryModelMappings
+    public static class PlayerHistoryMappings
     {
-        public class HistoryModelMapper : ClassMapper<History>
+        public class PlayerHistoryMapper : ClassMapper<PlayerHistory>
         {
-            public HistoryModelMapper()
+            public PlayerHistoryMapper()
             {
                 //use different table name
                 Table("PlayerHistory");
@@ -18,7 +18,7 @@ namespace FantasyPremierLeague
                 Map(x => x.fixture).Column("fixtureId");
                 Map(x => x.opponent_team).Column("opponent_teamId");
 
-                Map(x => x.id).Key(KeyType.Assigned);
+                Map(x => x.id).Key(KeyType.Identity);
 
                 //Ignore this property entirely
                 //Map(x => x.kickoff_time_formatted).Ignore();
