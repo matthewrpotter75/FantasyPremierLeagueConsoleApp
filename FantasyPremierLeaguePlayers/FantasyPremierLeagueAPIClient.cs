@@ -232,9 +232,9 @@ namespace FantasyPremierLeague
 
                     foreach (PlayerHistory playerHistory in fantasyPremierLeaguePlayerData.history)
                     {
-                        List<int> playerHistoryGameweekIds = playerHistoryRepository.GetPlayerHistoryGameweekIdsForPlayerId(playerHistory.element);
+                        List<int> playerHistoryFixtureIds = playerHistoryRepository.GetPlayerHistoryFixtureIdsForPlayerId(playerHistory.element);
 
-                        if (!playerHistoryGameweekIds.Contains(playerHistory.round) && playerHistory.team_h_score != null)
+                        if (!playerHistoryFixtureIds.Contains(playerHistory.fixture) && playerHistory.team_h_score != null)
                         {
                             playerHistoryRepository.InsertPlayerHistory(playerHistory);
                             //Logger.Out("PlayerId (" + Convert.ToString(playerID) + ") - inserted");

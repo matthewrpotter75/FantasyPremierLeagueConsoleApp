@@ -164,6 +164,29 @@ namespace FantasyPremierLeague
             }
         }
 
+        public List<int> GetPlayerHistoryFixtureIdsForPlayerId(int playerId)
+        {
+            try
+            {
+                using (IDbConnection db = new SqlConnection(ConfigurationManager.ConnectionStrings["FantasyPremierLeague"].ConnectionString))
+                {
+                    string selectQuery = @"SELECT fixtureid AS id FROM dbo.PlayerHistory WHERE playerid = @PlayerId;";
+
+                    IDataReader reader = db.ExecuteReader(selectQuery, new { PlayerId = playerId }, commandTimeout: 300);
+
+                    List<int> result = ReadList(reader);
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("PlayerHistory Repository (GetPlayerHistoryFixtureIdsForPlayerId): " + ex.Message);
+                throw ex;
+            }
+        }
+
+
         List<int> ReadList(IDataReader reader)
         {
             List<int> list = new List<int>();
